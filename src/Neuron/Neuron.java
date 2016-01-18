@@ -14,14 +14,22 @@ import java.util.Map;
  */
 public class Neuron {
 
-    Map<String, Double> weights;
+    private Map<String, Double> weights;
+    private int inputs
 
-    public void Neuron(int inputNr, int outputNr) {
+    public void Neuron(int inputsNr, int outputNr) {
         weights = new HashMap<>();
-        for (int i = 0; i < inputNr; i++) {
-
+        for (int i = 0; i < inputsNr; i++) {
+            double d =  Math.random();
+            if(d==0) d=0.1;
+            
+            weights.put("w"+i, d);
         }
 
+    }
+    
+    public boolean setInputSignal(double[] signals){
+        
     }
 
 }
