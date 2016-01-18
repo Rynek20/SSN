@@ -23,4 +23,7 @@ public class Neuron {
         z++;
         //asdas
     }
+    private void stop(){
+        
+    }
 }
