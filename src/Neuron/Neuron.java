@@ -10,5 +10,8 @@ package Neuron;
  * @author adm
  */
 public class Neuron {
-    
+    public void Neuron(){
+        int w;
+        w=1;
+    }
 }
