@@ -22,6 +22,7 @@ public class Neuron {
         int z =0;
         z++;
         //asdas
+        /asdddds
     }
 
 }
