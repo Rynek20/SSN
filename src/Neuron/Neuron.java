@@ -5,24 +5,23 @@
  */
 package Neuron;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author adm
  */
 public class Neuron {
-    public void Neuron(){
-        int x;
-        int y;
-        x=1;
-        y =x;
-        x++;
-        System.out.print(x);
-        System.out.print(y);
-        //komentarz
-        int z =0;
-        z++;
-        //asdas
-        /asdddds
+
+    Map<String, Double> weights;
+
+    public void Neuron(int inputNr, int outputNr) {
+        weights = new HashMap<>();
+        for (int i = 0; i < inputNr; i++) {
+
+        }
+
     }
 
 }
