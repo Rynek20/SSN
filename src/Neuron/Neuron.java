@@ -12,6 +12,8 @@ package Neuron;
 public class Neuron {
     public void Neuron(){
         int x;
-        
+        x = 1;
+        x++;
+        System.out.println(x);
     }
 }
