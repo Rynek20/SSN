@@ -21,5 +21,6 @@ public class Neuron {
         //komentarz
         int z =0;
         z++;
+        //asdas
     }
 }
