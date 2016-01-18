@@ -17,5 +17,6 @@ public class Neuron {
         y =x;
         x++;
         System.out.print(x);
+        System.out.print(y);
     }
 }
