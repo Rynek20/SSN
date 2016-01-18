@@ -11,7 +11,6 @@ package Neuron;
  */
 public class Neuron {
     public void Neuron(){
-        int w;
-        w=1;
+        
     }
 }
