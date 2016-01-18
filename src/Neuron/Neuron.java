@@ -13,5 +13,6 @@ public class Neuron {
     public void Neuron(){
         int x;
         x=2;
+        x++;
     }
 }
