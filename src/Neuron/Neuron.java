@@ -22,4 +22,7 @@ public class Neuron {
         int z =0;
         z++;
     }
+    private void stop(){
+        
+    }
 }
