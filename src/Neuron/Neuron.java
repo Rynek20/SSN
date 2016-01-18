@@ -13,6 +13,7 @@ public class Neuron {
     public void Neuron(){
         int x;
         int y;
+        x=1;
         y =x;
         x++;
         System.out.print(x);
