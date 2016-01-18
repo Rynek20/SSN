@@ -19,5 +19,7 @@ public class Neuron {
         System.out.print(x);
         System.out.print(y);
         //komentarz
+        int z =0;
+        z++;
     }
 }
