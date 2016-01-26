@@ -39,7 +39,7 @@ public class Neuron extends Thread {
     
     @Override
     public void run(){
-        double sum = sum();
+        double sum = getSum();
         output = activationFunction(sum);
     }
     
@@ -49,7 +49,7 @@ public class Neuron extends Thread {
         return true;
     }
     
-    private double sum() {
+    private double getSum() {
         double sum = 0;
         if (inputsAmount > 0) {
             for (int i = 0; i < inputsAmount; i++) {
