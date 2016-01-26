@@ -6,7 +6,7 @@ public class Network {
     private int NumberOfLayers;
     private int[] NeuronsInLayer;
     
-    public Network(){
+    public Network(int NumberOfLayers, int[] NeuronsInLayer){
         
     }
 }
