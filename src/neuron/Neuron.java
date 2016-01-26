@@ -13,7 +13,7 @@ public class Neuron extends Thread {
     private int inputsAmount;
     private int outputsAmount;
 
-    public void Neuron(int inputsAmount) {
+    public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
         output = 0;
         
