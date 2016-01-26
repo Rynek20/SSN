@@ -29,5 +29,6 @@ public class Network {
                 networkStructure[i][j] = new Neuron(inputs);
             }
         }
+        System.out.print("a");
     }
 }
