@@ -7,13 +7,13 @@ public class Neuron extends Thread {
 
     private Map<String, Double> weights;
     private Map<String, Double> inputs;
-    private double output;
+    private Double output;
     private int inputsAmount;
     private int outputsAmount;
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
-        output = 0;
+        output = 0.0;
 
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
@@ -34,7 +34,9 @@ public class Neuron extends Thread {
         }
 
     }
-
+    public void changeOutput(){
+        output = 10.0;
+    }
     @Override
     public void run() {
         double sum = getSum();
@@ -103,7 +105,7 @@ public class Neuron extends Thread {
         return true;
     }
     
-    public double getOutput(){
+    public Double getOutput(){
         return output;
     }
 
