@@ -4,16 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Neuron extends Thread {
-
-    private Map<String, Double> weights;
-    private Map<String, Double> inputs;
-    private Double output;
+    private class DoubleHolder{
+        Double value = 0.0;
+        public DoubleHolder(double d){
+            value = d;
+        }
+    }
+    private Map<String, DoubleHolder> weights;
+    private Map<String, DoubleHolder> inputs;
+    private DoubleHolder output;
     private int inputsAmount;
     private int outputsAmount;
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
-        output = new Double(0);
+        output = new DoubleHolder(0);
 
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
@@ -30,16 +35,16 @@ public class Neuron extends Thread {
                 d = 0.01;
             }
 
-            weights.put("w" + i, d);
+            weights.put("w" + i, new DoubleHolder(d));
         }
 
     }
     public void changeOutput(){
-        output = (Double)10.0;
+        output.value = 10.0;
     }
     @Override
     public void run() {
-        double sum = getSum();
+        DoubleHolder sum = getSum();
         output = activationFunction(sum);
     }
 
@@ -51,19 +56,19 @@ public class Neuron extends Thread {
         return true;
     }
 
-    private double getSum() {
+    private DoubleHolder getSum() {
         double sum = 0;
         if (inputsAmount > 0) {
             for (int i = 0; i < inputsAmount; i++) {
-                sum += inputs.get("x" + i) * weights.get("w" + i);
+                sum += inputs.get("x" + i).value * weights.get("w" + i).value;
             }
         }
-        return sum;
+        return new DoubleHolder(sum);
     }
 
-    private double activationFunction(double x) {
-        double y = 1 / (1 + Math.pow(Math.E, -x));
-        return y;
+    private DoubleHolder activationFunction(DoubleHolder x) {
+        double y = 1 / (1 + Math.pow(Math.E, -x.value));
+        return new DoubleHolder(y);
     }
 
     public boolean setInputs(double[] signals) {
@@ -74,7 +79,7 @@ public class Neuron extends Thread {
             inputs.clear();
         }
         for (int i = 0; i < signals.length; i++) {
-            inputs.put("x" + i, signals[i]);
+            inputs.put("x" + i, new DoubleHolder(signals[i]));
         }
         return true;
     }
@@ -86,7 +91,7 @@ public class Neuron extends Thread {
         if (!inputs.isEmpty()) {
             inputs.clear();
         }
-        inputs.put("x0", input);
+        inputs.put("x0", new DoubleHolder(input));
         return true;
     }
     
@@ -104,8 +109,12 @@ public class Neuron extends Thread {
         return true;
     }
     
-    public Double getOutput(){
+    private DoubleHolder getOutput(){
         return output;
+    }
+    
+    public Double getOutputValue(){
+        return output.value;
     }
 
 }

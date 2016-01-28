@@ -35,5 +35,7 @@ public class Network extends Thread{
             }
         }
         System.out.print("a");
+        networkStructure[0][0].changeOutput();
+        System.out.print("a");
     }
 }
