@@ -1,4 +1,4 @@
-package neuron;
+package ssn;
 
 import java.util.HashMap;
 import java.util.Map;

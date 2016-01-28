@@ -1,8 +1,6 @@
 
 package ssn;
 
-import neuron.Neuron;
-
 
 public class Network extends Thread{
     private int NumberOfLayers;
