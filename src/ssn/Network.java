@@ -4,7 +4,7 @@ package ssn;
 import neuron.Neuron;
 
 
-public class Network {
+public class Network extends Thread{
     private int NumberOfLayers;
     private int[] NeuronsInLayer;
     
@@ -27,6 +27,11 @@ public class Network {
                 int inputs=1;
                 if(i>0) inputs = this.NeuronsInLayer[i-1];
                 networkStructure[i][j] = new Neuron(inputs);
+            }
+        }
+        for(int i=1; i<this.NumberOfLayers;i++){
+            for(int j=0;j<this.NeuronsInLayer[i];j++){
+                networkStructure[i][j].setInputs(networkStructure[i-1]);
             }
         }
         System.out.print("a");
