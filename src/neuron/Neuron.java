@@ -13,7 +13,7 @@ public class Neuron extends Thread {
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
-        output = 0.0;
+        output = new Double(0);
 
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
@@ -35,7 +35,7 @@ public class Neuron extends Thread {
 
     }
     public void changeOutput(){
-        output = 10.0;
+        output = (Double)10.0;
     }
     @Override
     public void run() {
@@ -97,10 +97,9 @@ public class Neuron extends Thread {
         if (!inputs.isEmpty()) {
             inputs.clear();
         }
-        int i=0;
-        for (Neuron neuronInput : neuronInputs) {
-            inputs.put("x" + i, neuronInput.getOutput());
-            i++;
+
+        for (int i=0;i<neuronInputs.length;i++) {
+            inputs.put("x" + i, neuronInputs[i].getOutput());
         }
         return true;
     }
