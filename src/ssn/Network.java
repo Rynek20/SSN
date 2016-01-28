@@ -5,8 +5,8 @@ package ssn;
 public class Network extends Thread{
     private int NumberOfLayers;
     private int[] NeuronsInLayer;
-    
     private Neuron[][] networkStructure;
+    private double trainingTime;
     
     public Network(int NumberOfLayers, int[] NeuronsInLayer){
         if(NeuronsInLayer.length != NumberOfLayers)
@@ -14,6 +14,7 @@ public class Network extends Thread{
         
         this.NumberOfLayers = NumberOfLayers;
         this.NeuronsInLayer = NeuronsInLayer;
+        this.trainingTime = -1;
         
         networkStructure = new Neuron[NumberOfLayers][0];
         for(int i=0;i<NumberOfLayers;i++){

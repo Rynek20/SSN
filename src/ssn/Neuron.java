@@ -111,7 +111,7 @@ public class Neuron extends Thread {
         return output;
     }
     
-    public Double getOutputValue(){
+    public double getOutputValue(){
         return output.value;
     }
 
