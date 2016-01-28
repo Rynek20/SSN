@@ -10,11 +10,11 @@ public class Neuron extends Thread {
             value = d;
         }
     }
-    private Map<String, DoubleHolder> weights;
-    private Map<String, DoubleHolder> inputs;
+    private final Map<String, DoubleHolder> weights;
+    private final Map<String, DoubleHolder> inputs;
     private DoubleHolder output;
-    private int inputsAmount;
-    private int outputsAmount;
+    private final int inputsAmount;
+    private final int outputsAmount;
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
@@ -39,9 +39,7 @@ public class Neuron extends Thread {
         }
 
     }
-    public void changeOutput(){
-        output.value = 10.0;
-    }
+
     @Override
     public void run() {
         DoubleHolder sum = getSum();

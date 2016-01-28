@@ -34,8 +34,17 @@ public class Network extends Thread{
                 networkStructure[i][j].setInputs(networkStructure[i-1]);
             }
         }
-        System.out.print("a");
-        networkStructure[0][0].changeOutput();
-        System.out.print("a");
+    }
+    
+    public void setTrainData(){
+        
+    }
+    
+    public void setValidationData(){
+        
+    }
+    
+    public void startTraining(){
+        
     }
 }
