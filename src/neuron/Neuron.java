@@ -1,9 +1,7 @@
-
 package neuron;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class Neuron extends Thread {
 
@@ -16,7 +14,7 @@ public class Neuron extends Thread {
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
         output = 0;
-        
+
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
         } else {
@@ -36,43 +34,77 @@ public class Neuron extends Thread {
         }
 
     }
-    
+
     @Override
-    public void run(){
+    public void run() {
         double sum = getSum();
         output = activationFunction(sum);
     }
-    
-    public boolean calculateNeuron(){
-        if (inputsAmount<1) return false;
+
+    public boolean calculateNeuron() {
+        if (inputsAmount < 1) {
+            return false;
+        }
         this.start();
         return true;
     }
-    
+
     private double getSum() {
         double sum = 0;
         if (inputsAmount > 0) {
             for (int i = 0; i < inputsAmount; i++) {
-                sum += inputs.get("x"+i) * weights.get("w"+i);
+                sum += inputs.get("x" + i) * weights.get("w" + i);
             }
         }
         return sum;
     }
-    
-    private double activationFunction(double x){
-        double y = 1 / (1+ Math.pow(Math.E, -x) );
+
+    private double activationFunction(double x) {
+        double y = 1 / (1 + Math.pow(Math.E, -x));
         return y;
     }
 
-    public boolean setInputSignal(double[] signals) {
+    public boolean setInputs(double[] signals) {
         if (signals.length != inputsAmount) {
             return false;
         }
-
+        if (!inputs.isEmpty()) {
+            inputs.clear();
+        }
         for (int i = 0; i < signals.length; i++) {
             inputs.put("x" + i, signals[i]);
         }
         return true;
+    }
+
+    public boolean setInput(double input) {
+        if (inputsAmount != 1) {
+            return false;
+        }
+        if (!inputs.isEmpty()) {
+            inputs.clear();
+        }
+        inputs.put("x0", input);
+        return true;
+    }
+    
+    public boolean setInputs(Neuron[] neuronInputs){
+        if (neuronInputs.length != inputsAmount) {
+            return false;
+        }
+        if (!inputs.isEmpty()) {
+            inputs.clear();
+        }
+        int i=0;
+        for (Neuron neuronInput : neuronInputs) {
+            inputs.put("x" + i, neuronInput.getOutput());
+            i++;
+        }
+        return true;
+    }
+    
+    public double getOutput(){
+        return output;
     }
 
 }
