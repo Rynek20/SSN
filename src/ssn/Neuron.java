@@ -32,7 +32,7 @@ public class Neuron extends Thread {
         for (int i = 0; i < inputsAmount; i++) {
             double d = (Math.random() * 2) - 1;
             if (d == 0) {
-                d = 0.01;
+                d = 0.001;
             }
 
             weights.put("w" + i, new DoubleHolder(d));
@@ -65,7 +65,7 @@ public class Neuron extends Thread {
     }
 
     private DoubleHolder activationFunction(DoubleHolder x) {
-        double y = 1 / (1 + Math.pow(Math.E, -x.value));
+        double y = 1.0 / (1.0 + Math.pow(Math.E, -x.value));
         return new DoubleHolder(y);
     }
 

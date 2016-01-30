@@ -13,6 +13,7 @@ public class Network extends Thread {
     private double trainingTime;
     private ArrayList<DataVector> trainingData;
     private ArrayList<DataVector> validationData;
+    private double networkError;
 
     public Network(int NumberOfLayers, int[] NeuronsInLayer) {
         if (NeuronsInLayer.length != NumberOfLayers) {
@@ -24,6 +25,7 @@ public class Network extends Thread {
         this.trainingTime = -1;
         this.trainingData = new ArrayList<>();
         this.validationData = new ArrayList<>();
+        this.networkError=0;
 
         networkStructure = new Neuron[NumberOfLayers][0];
         for (int i = 0; i < NumberOfLayers; i++) {
@@ -58,7 +60,9 @@ public class Network extends Thread {
         trainingData.stream().forEach((dataVector) -> {
             for (int n = 0; n < NumberOfLayers; n++) {
                 for (int i = 0; i < NeuronsInLayer[n]; i++) {
-                    if(n==0) networkStructure[n][i].setInput(dataVector.getInputParameter(i));
+                    if (n == 0) {
+                        networkStructure[n][i].setInput(dataVector.getInputParameter(i));
+                    }
                     networkStructure[n][i].calculateNeuron();
                 }
                 for (int i = 0; i < NeuronsInLayer[n]; i++) {
@@ -69,6 +73,12 @@ public class Network extends Thread {
                     }
                 }
             }
+            for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {
+            
+            }
+            //po zakończeniu obliczeń uruchomienie  wstecznej propagacji błędów
+            //http://www.ai.c-labtech.net/sn/pod_prakt.html
+            //http://edu.pjwstk.edu.pl/wyklady/nai/scb/wyklad3/w3.htm
         });
     }
 }
