@@ -1,12 +1,16 @@
 
 package ssn;
 
+import java.util.ArrayList;
+
 
 public class Network extends Thread{
     private int NumberOfLayers;
     private int[] NeuronsInLayer;
     private Neuron[][] networkStructure;
     private double trainingTime;
+    private ArrayList<DataVector> trainingData;
+    private ArrayList<DataVector> validationData;
     
     public Network(int NumberOfLayers, int[] NeuronsInLayer){
         if(NeuronsInLayer.length != NumberOfLayers)
@@ -15,6 +19,8 @@ public class Network extends Thread{
         this.NumberOfLayers = NumberOfLayers;
         this.NeuronsInLayer = NeuronsInLayer;
         this.trainingTime = -1;
+        this.trainingData = new ArrayList<>();
+        this.validationData = new ArrayList<>();
         
         networkStructure = new Neuron[NumberOfLayers][0];
         for(int i=0;i<NumberOfLayers;i++){
@@ -35,11 +41,11 @@ public class Network extends Thread{
         }
     }
     
-    public void setTrainData(){
+    public void setTrainingData(DataVector[] data){
         
     }
     
-    public void setValidationData(){
+    public void setValidationData(DataVector[] data){
         
     }
     
