@@ -58,7 +58,7 @@ public class Network extends Thread {
         trainingData.stream().forEach((dataVector) -> {
             for (int n = 0; n < NumberOfLayers; n++) {
                 for (int i = 0; i < NeuronsInLayer[n]; i++) {
-                    if(n==0) networkStructure[n][i].setInput(dataVector.getParameter(i));
+                    if(n==0) networkStructure[n][i].setInput(dataVector.getInputParameter(i));
                     networkStructure[n][i].calculateNeuron();
                 }
                 for (int i = 0; i < NeuronsInLayer[n]; i++) {
