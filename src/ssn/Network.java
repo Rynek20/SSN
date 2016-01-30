@@ -2,6 +2,8 @@ package ssn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Network extends Thread {
 
@@ -53,6 +55,20 @@ public class Network extends Thread {
     }
 
     public void startTraining() {
-
+        trainingData.stream().forEach((dataVector) -> {
+            for (int n = 0; n < NumberOfLayers; n++) {
+                for (int i = 0; i < NeuronsInLayer[n]; i++) {
+                    if(n==0) networkStructure[n][i].setInput(dataVector.getParameter(i));
+                    networkStructure[n][i].calculateNeuron();
+                }
+                for (int i = 0; i < NeuronsInLayer[n]; i++) {
+                    try {
+                        networkStructure[n][i].join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
     }
 }
