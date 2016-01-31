@@ -79,6 +79,7 @@ public class Network extends Thread {
             //po zakończeniu obliczeń uruchomienie  wstecznej propagacji błędów
             //http://www.ai.c-labtech.net/sn/pod_prakt.html
             //http://edu.pjwstk.edu.pl/wyklady/nai/scb/wyklad3/w3.htm
+            // http://home.agh.edu.pl/~vlsi/AI/backp_t/backprop.html
         });
     }
 }
