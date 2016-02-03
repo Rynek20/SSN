@@ -2,11 +2,17 @@ package ssn;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Neuron extends Thread {
-    private class DoubleHolder{
+
+    private class DoubleHolder {
+
         Double value = 0.0;
-        public DoubleHolder(double d){
+
+        public DoubleHolder(double d) {
             value = d;
         }
     }
@@ -15,10 +21,14 @@ public class Neuron extends Thread {
     private DoubleHolder output;
     private final int inputsAmount;
     private final int outputsAmount;
+    private Boolean suspended;
+    private final Object holder;
+    private Semaphore semaphore;
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
         output = new DoubleHolder(0);
+        holder= new Object();
 
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
@@ -27,6 +37,7 @@ public class Neuron extends Thread {
         }
 
         this.outputsAmount = 1;
+        this.suspended = false;
 
         weights = new HashMap<>();
         for (int i = 0; i < inputsAmount; i++) {
@@ -42,15 +53,35 @@ public class Neuron extends Thread {
 
     @Override
     public void run() {
-        DoubleHolder sum = getSum();
-        output = activationFunction(sum);
+        while (true) {
+            DoubleHolder sum = getSum();
+            output = activationFunction(sum);
+            System.out.println("neuron obliczyl");
+            semaphore.release();
+            try {
+                suspended = true;
+                synchronized (holder) {
+                    holder.wait();
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Neuron.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
-    public boolean calculateNeuron() {
+    public boolean calculateNeuron(Semaphore semaphore) {
         if (inputsAmount < 1) {
             return false;
         }
-        this.start();
+        this.semaphore = semaphore;
+        if (suspended) {
+            suspended = false;
+            synchronized (holder) {
+                holder.notifyAll();
+            }
+        } else {
+            this.start();
+        }
         return true;
     }
 
@@ -92,8 +123,8 @@ public class Neuron extends Thread {
         inputs.put("x0", new DoubleHolder(input));
         return true;
     }
-    
-    public boolean setInputs(Neuron[] neuronInputs){
+
+    public boolean setInputs(Neuron[] neuronInputs) {
         if (neuronInputs.length != inputsAmount) {
             return false;
         }
@@ -101,17 +132,17 @@ public class Neuron extends Thread {
             inputs.clear();
         }
 
-        for (int i=0;i<neuronInputs.length;i++) {
+        for (int i = 0; i < neuronInputs.length; i++) {
             inputs.put("x" + i, neuronInputs[i].getOutput());
         }
         return true;
     }
-    
-    private DoubleHolder getOutput(){
+
+    private DoubleHolder getOutput() {
         return output;
     }
-    
-    public double getOutputValue(){
+
+    public double getOutputValue() {
         return output.value;
     }
 
