@@ -29,7 +29,7 @@ public class SSN {
         data[1].setOutputParameter(0, 0);
         siec.setTrainingData(data);
         siec.startTraining();
-        System.out.println("f");
+        System.out.println("koniec");
     }
     
 }

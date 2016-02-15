@@ -75,8 +75,19 @@ public class Network extends Thread {
                 }
                 System.out.println("Przechodze do kolejnej warstwy");
             }
-            for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {
-            
+            for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {      
+                double answer = networkStructure[NumberOfLayers-1][i].getOutputValue();
+                double expectedValue = dataVector.getOutputParameter(i);
+                networkStructure[NumberOfLayers-1][i].setNeuronError(expectedValue - answer);  
+            }
+            for (int i = NumberOfLayers - 2; i>=0; i--){
+                for(int j = 0; j < NeuronsInLayer[i]; j++){
+                    double error = 0;
+                    for(int k=0;k < NeuronsInLayer[i+1]; k++){
+                        error += networkStructure[i+1][k].getOutputValue()*networkStructure[i+1][k].getWeight(j);
+                    }
+                    networkStructure[i][j].setNeuronError(error);
+                }
             }
             
             //po zakończeniu obliczeń uruchomienie  wstecznej propagacji błędów

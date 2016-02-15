@@ -24,11 +24,13 @@ public class Neuron extends Thread {
     private Boolean suspended;
     private final Object holder;
     private Semaphore semaphore;
+    private double neuronError;
 
     public Neuron(int inputsAmount) {
         inputs = new HashMap<>();
         output = new DoubleHolder(0);
         holder= new Object();
+        neuronError=0;
 
         if (inputsAmount > 0) {
             this.inputsAmount = inputsAmount;
@@ -85,6 +87,8 @@ public class Neuron extends Thread {
         return true;
     }
 
+  
+    
     private DoubleHolder getSum() {
         double sum = 0;
         if (inputsAmount > 0) {
@@ -145,5 +149,17 @@ public class Neuron extends Thread {
     public double getOutputValue() {
         return output.value;
     }
+    
+    public double getNeuronError(){
+        return neuronError;
+    }
 
+    public void setNeuronError(double neuronError) {
+        this.neuronError = neuronError;
+    }
+    
+    public double getWeight(int nr){
+        return weights.get("w"+nr).value;
+    }
+    
 }
