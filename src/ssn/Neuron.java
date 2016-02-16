@@ -103,6 +103,15 @@ public class Neuron extends Thread {
         double y = 1.0 / (1.0 + Math.pow(Math.E, -x.value));
         return new DoubleHolder(y);
     }
+    
+    public double derivativeActivationFunction(double x){
+        DoubleHolder f = activationFunction(new DoubleHolder(x));
+        return f.value*(1-f.value);
+    }
+    public double derivativeActivationFunction(){
+        DoubleHolder f = activationFunction(new DoubleHolder(getSum().value));
+        return f.value*(1-f.value);
+    }
 
     public boolean setInputs(double[] signals) {
         if (signals.length != inputsAmount) {
@@ -160,6 +169,22 @@ public class Neuron extends Thread {
     
     public double getWeight(int nr){
         return weights.get("w"+nr).value;
+    }
+    
+    public boolean setWeight(int nr, double value){
+        if(weights.containsKey("w"+nr)){
+            weights.put("w"+nr, new DoubleHolder(value));
+            return true;
+        }
+        return false;
+    }
+
+    public int getInputsAmount() {
+        return inputsAmount;
+    }
+    
+    public double getInputValue(int nr){
+        return inputs.get("x" + nr).value;
     }
     
 }
