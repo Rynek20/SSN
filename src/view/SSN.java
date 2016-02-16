@@ -14,7 +14,7 @@ public class SSN {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int[] tab = {3,7,2};
+        int[] tab = {2,5,1};
         Network siec = new Network(3, tab);
         DefaultDataVector[] data = new DefaultDataVector[2];
         data[0] = new DefaultDataVector();

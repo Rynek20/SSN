@@ -6,6 +6,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -15,6 +16,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import ssn.DataVector;
 
 /**
  *
@@ -22,13 +24,16 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainWindow
-     */
+    DataVector [] data;
     public MainWindow() {
         initComponents();
     }
 
+    public MainWindow(DataVector[] data) {
+        initComponents();
+        this.data = data;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,7 +115,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     public void drawChart(){
         XYDataset dataset = createDataset();
-            JFreeChart chart = ChartFactory.createXYLineChart("Wykres rozrzutu",
+            JFreeChart chart = ChartFactory.createXYLineChart("Wykres",
                     "X ",
                     "Y ",
                     dataset,
@@ -122,8 +127,10 @@ public class MainWindow extends javax.swing.JFrame {
             XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
             renderer.setSeriesLinesVisible(0, false);
             renderer.setSeriesShapesVisible(0, true);
-            renderer.setSeriesLinesVisible(1, true);
-            renderer.setSeriesShapesVisible(1, false);
+            renderer.setSeriesLinesVisible(1, false);
+            renderer.setSeriesShapesVisible(1, true);
+            renderer.setSeriesPaint(0, Color.yellow);
+            renderer.setSeriesPaint(0, Color.red);
             plot.setRenderer(renderer);
 
             ChartPanel CP = new ChartPanel(chart);
@@ -135,9 +142,8 @@ public class MainWindow extends javax.swing.JFrame {
     
     private XYDataset createDataset() {
         XYSeries series1 = new XYSeries("0");
-        float[] array1 = reader.getParameterArray(Attribute1ComboBox.getSelectedIndex());
-        float[] array2 = reader.getParameterArray(Attribute2ComboBox.getSelectedIndex());
-        for(int i=0;i<array1.length; i++){
+
+        for(int i=0;i<data.length; i++){
             series1.add(array1[i],array2[i]);
         }
         XYSeriesCollection dataset = new XYSeriesCollection();
