@@ -1,6 +1,7 @@
 
 package view;
 
+import gui.MainWindow;
 import ssn.DefaultDataVector;
 import ssn.Network;
 
@@ -16,22 +17,38 @@ public class SSN {
     public static void main(String[] args) {
         int[] tab = {2,5,1};
         Network siec = new Network(3, tab);
-        DefaultDataVector[] data = new DefaultDataVector[2];
-        data[0] = new DefaultDataVector();
-        data[1] = new DefaultDataVector();
-        data[0].setInputParameter(0, 1.34);
-        data[0].setInputParameter(1, 2.33);
-        data[0].setInputParameter(2, 1.2);
-        data[0].setOutputParameter(0, 1);
-        data[0].setOutputParameter(1, 1);
-        data[1].setInputParameter(0, 0.34);
-        data[1].setInputParameter(1, 1.33);
-        data[1].setInputParameter(2, 3.2);
-        data[1].setOutputParameter(0, 0);
-        data[1].setOutputParameter(1, 0);
+        DefaultDataVector[] data = new DefaultDataVector[10];
+        data[0] = createVector(1, 2, 0);
+        data[1] = createVector(2, 2, 0);
+        data[2] = createVector(3, 2, 0);
+        data[3] = createVector(5, 5, 1);
+        data[4] = createVector(6, 7, 1);
+        data[5] = createVector(4, 5, 1);
+        data[6] = createVector(1, 1, 0);
+        data[7] = createVector(2, 3, 0);
+        data[8] = createVector(7, 4, 1);
+        data[9] = createVector(8, 8, 1);
+        
+        MainWindow window = new MainWindow(data);
+        window.setVisible(true);    
+        
         siec.setTrainingData(data);
         siec.startTraining();
+        
+        DefaultDataVector d = new DefaultDataVector();
+        d.setInputParameter(0, 7);
+        d.setInputParameter(1, 5);
+        
+        System.out.println(siec.answer(d));
         System.out.println("koniec");
+    }
+    
+    private static DefaultDataVector createVector(double x, double y , int value){
+        DefaultDataVector d = new DefaultDataVector();
+        d.setInputParameter(0, x);
+        d.setInputParameter(1, y);
+        d.setOutputParameter(0, value);
+        return d;
     }
     
 }

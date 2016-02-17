@@ -32,6 +32,7 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow(DataVector[] data) {
         initComponents();
         this.data = data;
+        drawChart();
     }
     
     /**
@@ -130,7 +131,7 @@ public class MainWindow extends javax.swing.JFrame {
             renderer.setSeriesLinesVisible(1, false);
             renderer.setSeriesShapesVisible(1, true);
             renderer.setSeriesPaint(0, Color.yellow);
-            renderer.setSeriesPaint(0, Color.red);
+            renderer.setSeriesPaint(1, Color.red);
             plot.setRenderer(renderer);
 
             ChartPanel CP = new ChartPanel(chart);
@@ -142,13 +143,14 @@ public class MainWindow extends javax.swing.JFrame {
     
     private XYDataset createDataset() {
         XYSeries series1 = new XYSeries("0");
-
+        XYSeries series2 = new XYSeries("1");
         for(int i=0;i<data.length; i++){
-            series1.add(array1[i],array2[i]);
+            if(data[i].getOutputParameter(0)==0) series1.add(data[i].getInputParameter(0),data[i].getInputParameter(1));
+            if(data[i].getOutputParameter(0)==1) series2.add(data[i].getInputParameter(0),data[i].getInputParameter(1));
         }
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);
-        dataset.addSeries(calculateRegression(array1,array2));
+        dataset.addSeries(series2);
         return dataset;
     }
 

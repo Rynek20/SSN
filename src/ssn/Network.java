@@ -110,4 +110,23 @@ public class Network extends Thread {
         });
 
     }
+    
+    public double answer(DefaultDataVector data){
+        for (int n = 0; n < NumberOfLayers; n++) {
+                Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
+                for (int i = 0; i < NeuronsInLayer[n]; i++) {
+                    if (n == 0) {
+                        networkStructure[n][i].setInput(data.getInputParameter(i));
+                    }
+                    networkStructure[n][i].calculateNeuron(sem);
+                }
+                try {
+                    sem.acquire();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("Przechodze do kolejnej warstwy");
+            }
+        return networkStructure[NumberOfLayers-1][0].getOutputValue();
+    }
 }
