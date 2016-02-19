@@ -15,7 +15,7 @@ public class Network extends Thread {
     private ArrayList<DataVector> trainingData;
     private ArrayList<DataVector> validationData;
     private double networkError;
-    private double learningRate = 0.01;
+    private double learningRate = 0.1;
 
     public Network(int NumberOfLayers, int[] NeuronsInLayer) {
         if (NeuronsInLayer.length != NumberOfLayers) {
