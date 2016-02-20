@@ -61,7 +61,7 @@ public class Network extends Thread {
     public void startTraining() {
 
         trainingData.stream().forEach((dataVector) -> {
-            for (int iteration = 0; iteration < 3; iteration++) {
+            for (int iteration = 0; iteration < 5; iteration++) {
                 for (int n = 0; n < NumberOfLayers; n++) {
                     Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
                     for (int i = 0; i < NeuronsInLayer[n]; i++) {
@@ -77,13 +77,16 @@ public class Network extends Thread {
                     }
                     System.out.println("Przechodze do kolejnej warstwy");
                 }
+                //obliczanie błędu dla warstwy wyjściowej
                 for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {
                     double answer = networkStructure[NumberOfLayers - 1][i].getOutputValue();
                     double expectedValue = dataVector.getOutputParameter(i);
                     double derivative = networkStructure[NumberOfLayers - 1][i].derivativeActivationFunction();
-                    networkStructure[NumberOfLayers - 1][i].setNeuronError(derivative * (expectedValue - answer));
+                    double error = derivative * (expectedValue - answer);
+                    networkStructure[NumberOfLayers - 1][i].setNeuronError(error);
                 }
-
+                
+                //obliczanie błędów dla pozostałych warstw
                 for (int i = NumberOfLayers - 2; i >= 0; i--) {
                     for (int j = 0; j < NeuronsInLayer[i]; j++) {
                         double error = 0;
@@ -95,7 +98,8 @@ public class Network extends Thread {
                     }
                 }
                 System.out.println("Obliczono błędy");
-
+                
+                //zmiana wag neuronów
                 for (int i = 0; i < this.NumberOfLayers; i++) {
                     for (int j = 0; j < this.NeuronsInLayer[i]; j++) {
                         int inputsCount = networkStructure[i][j].getInputsAmount();

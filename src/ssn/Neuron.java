@@ -173,7 +173,8 @@ public class Neuron extends Thread {
     
     public boolean setWeight(int nr, double value){
         if(weights.containsKey("w"+nr)){
-            weights.put("w"+nr, new DoubleHolder(value));
+            DoubleHolder weight = weights.get("w"+nr);
+            weight.value = value;
             return true;
         }
         return false;
