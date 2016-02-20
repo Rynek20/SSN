@@ -57,7 +57,7 @@ public class Neuron extends Thread {
     public void run() {
         while (true) {
             DoubleHolder sum = getSum();
-            output = activationFunction(sum);
+            output.value = activationFunction(sum);
             System.out.println("neuron obliczyl");
             semaphore.release();
             try {
@@ -99,17 +99,17 @@ public class Neuron extends Thread {
         return new DoubleHolder(sum);
     }
 
-    private DoubleHolder activationFunction(DoubleHolder x) {
+    private double activationFunction(DoubleHolder x) {
         double y = 1.0 / (1.0 + Math.pow(Math.E, -x.value));
-        return new DoubleHolder(y);
+        return y;
     }
     
     public double derivativeActivationFunction(double x){
-        DoubleHolder f = activationFunction(new DoubleHolder(x));
+        DoubleHolder f = new DoubleHolder(activationFunction(new DoubleHolder(x)));
         return f.value*(1-f.value);
     }
     public double derivativeActivationFunction(){
-        DoubleHolder f = activationFunction(new DoubleHolder(getSum().value));
+        DoubleHolder f = new DoubleHolder(activationFunction(new DoubleHolder(getSum().value)));
         return f.value*(1-f.value);
     }
 

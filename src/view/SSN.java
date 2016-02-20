@@ -15,7 +15,7 @@ public class SSN {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int[] tab = {2,5,1};
+        int[] tab = {2,3,1};
         Network siec = new Network(3, tab);
         DefaultDataVector[] data = new DefaultDataVector[10];
         data[0] = createVector(1, 2, 0);
@@ -36,8 +36,8 @@ public class SSN {
         siec.startTraining();
         
         DefaultDataVector d = new DefaultDataVector();
-        d.setInputParameter(0, 7);
-        d.setInputParameter(1, 5);
+        d.setInputParameter(0, 2);
+        d.setInputParameter(1, 1);
         
         System.out.println(siec.answer(d));
         System.out.println("koniec");

@@ -15,7 +15,7 @@ public class Network extends Thread {
     private ArrayList<DataVector> trainingData;
     private ArrayList<DataVector> validationData;
     private double networkError;
-    private double learningRate = 0.1;
+    private double learningRate = 0.01;
 
     public Network(int NumberOfLayers, int[] NeuronsInLayer) {
         if (NeuronsInLayer.length != NumberOfLayers) {
@@ -61,72 +61,71 @@ public class Network extends Thread {
     public void startTraining() {
 
         trainingData.stream().forEach((dataVector) -> {
-            for (int n = 0; n < NumberOfLayers; n++) {
-                Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
-                for (int i = 0; i < NeuronsInLayer[n]; i++) {
-                    if (n == 0) {
-                        networkStructure[n][i].setInput(dataVector.getInputParameter(i));
+            for (int iteration = 0; iteration < 3; iteration++) {
+                for (int n = 0; n < NumberOfLayers; n++) {
+                    Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
+                    for (int i = 0; i < NeuronsInLayer[n]; i++) {
+                        if (n == 0) {
+                            networkStructure[n][i].setInput(dataVector.getInputParameter(i));
+                        }
+                        networkStructure[n][i].calculateNeuron(sem);
                     }
-                    networkStructure[n][i].calculateNeuron(sem);
-                }
-                try {
-                    sem.acquire();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println("Przechodze do kolejnej warstwy");
-            }
-            for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {
-                double answer = networkStructure[NumberOfLayers - 1][i].getOutputValue();
-                double expectedValue = dataVector.getOutputParameter(i);
-                double derivative = networkStructure[NumberOfLayers - 1][i].derivativeActivationFunction();
-                networkStructure[NumberOfLayers - 1][i].setNeuronError(derivative*(expectedValue - answer));
-            }
-            for (int i = NumberOfLayers - 2; i >= 0; i--) {
-                for (int j = 0; j < NeuronsInLayer[i]; j++) {
-                    double error = 0;
-                    double derivative = networkStructure[i][j].derivativeActivationFunction();
-                    for (int k = 0; k < NeuronsInLayer[i + 1]; k++) {
-                        error += networkStructure[i + 1][k].getOutputValue() * networkStructure[i + 1][k].getWeight(j);
+                    try {
+                        sem.acquire();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    networkStructure[i][j].setNeuronError(derivative * error);
+                    System.out.println("Przechodze do kolejnej warstwy");
                 }
-            }
+                for (int i = 0; i < NeuronsInLayer[NumberOfLayers - 1]; i++) {
+                    double answer = networkStructure[NumberOfLayers - 1][i].getOutputValue();
+                    double expectedValue = dataVector.getOutputParameter(i);
+                    double derivative = networkStructure[NumberOfLayers - 1][i].derivativeActivationFunction();
+                    networkStructure[NumberOfLayers - 1][i].setNeuronError(derivative * (expectedValue - answer));
+                }
 
-            for (int i = 0; i < this.NumberOfLayers; i++) {
-                for (int j = 0; j < this.NeuronsInLayer[i]; j++) {
-                    int inputsCount = networkStructure[i][j].getInputsAmount();
-                    for(int k=0;k<inputsCount;k++){
-                        double newWeight = learningRate * networkStructure[i][j].getNeuronError() * networkStructure[i][j].getInputValue(k) ; 
-                        networkStructure[i][j].setWeight(k, newWeight);
+                for (int i = NumberOfLayers - 2; i >= 0; i--) {
+                    for (int j = 0; j < NeuronsInLayer[i]; j++) {
+                        double error = 0;
+                        double derivative = networkStructure[i][j].derivativeActivationFunction();
+                        for (int k = 0; k < NeuronsInLayer[i + 1]; k++) {
+                            error += networkStructure[i + 1][k].getOutputValue() * networkStructure[i + 1][k].getWeight(j);
+                        }
+                        networkStructure[i][j].setNeuronError(derivative * error);
                     }
                 }
-            }
+                System.out.println("Obliczono błędy");
 
-            //po zakończeniu obliczeń uruchomienie  wstecznej propagacji błędów
-            //http://www.ai.c-labtech.net/sn/pod_prakt.html
-            //http://edu.pjwstk.edu.pl/wyklady/nai/scb/wyklad3/w3.htm
-            // http://home.agh.edu.pl/~vlsi/AI/backp_t/backprop.html
+                for (int i = 0; i < this.NumberOfLayers; i++) {
+                    for (int j = 0; j < this.NeuronsInLayer[i]; j++) {
+                        int inputsCount = networkStructure[i][j].getInputsAmount();
+                        for (int k = 0; k < inputsCount; k++) {
+                            double newWeight = learningRate * networkStructure[i][j].getNeuronError() * networkStructure[i][j].getInputValue(k);
+                            networkStructure[i][j].setWeight(k, newWeight);
+                        }
+                    }
+                }
+                System.out.println("Zmieniono wagi");
+            }
         });
 
     }
-    
-    public double answer(DefaultDataVector data){
+
+    public double answer(DefaultDataVector data) {
         for (int n = 0; n < NumberOfLayers; n++) {
-                Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
-                for (int i = 0; i < NeuronsInLayer[n]; i++) {
-                    if (n == 0) {
-                        networkStructure[n][i].setInput(data.getInputParameter(i));
-                    }
-                    networkStructure[n][i].calculateNeuron(sem);
+            Semaphore sem = new Semaphore(-NeuronsInLayer[n] + 1);
+            for (int i = 0; i < NeuronsInLayer[n]; i++) {
+                if (n == 0) {
+                    networkStructure[n][i].setInput(data.getInputParameter(i));
                 }
-                try {
-                    sem.acquire();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println("Przechodze do kolejnej warstwy");
+                networkStructure[n][i].calculateNeuron(sem);
             }
-        return networkStructure[NumberOfLayers-1][0].getOutputValue();
+            try {
+                sem.acquire();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Network.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return networkStructure[NumberOfLayers - 1][0].getOutputValue();
     }
 }
